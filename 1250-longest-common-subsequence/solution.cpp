@@ -1,13 +1,31 @@
 class Solution {
 public:
-    int f(string &text1, string &text2,int l1, int l2,vector<vector<int>>&dp){
-        if (l1<0||l2<0) return 0;
-        if (dp[l1][l2]!=-1) return dp[l1][l2];
+    int f(string &text1, string &text2, int l1,int l2,vector<vector<int>> &dp){
+        //pruning
+        //base case
+        if (l1<0 || l2<0) return 0;
+        //cache check
+        if(dp[l1][l2]!=-1) return dp[l1][l2];
+        //transition
+        int take=INT_MIN;
+        int notTake=INT_MIN;
         if (text1[l1]==text2[l2]){
-            return dp[l1][l2]=1+f(text1,text2,l1-1,l2-1,dp);
+            take=1+f(text1,text2,l1-1,l2-1,dp);
+            return dp[l1][l2]=take;
         }
-        return dp[l1][l2]=0+max(f(text1,text2,l1-1,l2,dp),f(text1,text2,l1,l2-1,dp));
+        notTake= max(f(text1,text2,l1-1,l2,dp),f(text1,text2,l1,l2-1,dp));
+        return dp[l1][l2]=notTake;
+        //save and return
     }
+
+
+
+
+
+
+
+
+
     int longestCommonSubsequence(string text1, string text2) {
         int l1= text1.length();
         int l2= text2.length();
@@ -15,3 +33,11 @@ public:
         return f(text1,text2,l1-1,l2-1,dp);
     }
 };
+    // int f(string &text1, string &text2,int l1, int l2,vector<vector<int>>&dp){
+    //     if (l1<0||l2<0) return 0;
+    //     if (dp[l1][l2]!=-1) return dp[l1][l2];
+    //     if (text1[l1]==text2[l2]){
+    //         return dp[l1][l2]=1+f(text1,text2,l1-1,l2-1,dp);
+    //     }
+    //     return dp[l1][l2]=0+max(f(text1,text2,l1-1,l2,dp),f(text1,text2,l1,l2-1,dp));
+    // }
