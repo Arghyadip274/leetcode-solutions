@@ -1,29 +1,35 @@
+
+
 class Solution {
 public:
-    vector<vector<int>> dp;
-    
-    bool f(int i, int currentSum, int totalSum, vector<int>& nums) {
-        if (currentSum * 2 == totalSum) return true;
-        if (i >= nums.size() || currentSum * 2 > totalSum) return false;
-        
-        if (dp[i][currentSum] != -1) return dp[i][currentSum];
-        
-        // Include nums[i]
-        bool include = f(i + 1, currentSum + nums[i], totalSum, nums);
-        
-        // Exclude nums[i]
-        bool exclude = f(i + 1, currentSum, totalSum, nums);
-        
-        dp[i][currentSum] = include || exclude;
-        return dp[i][currentSum];
+    bool f(int i,int target,vector<int>&nums,vector<vector<int>>&dp){
+        //basecase
+        if (target==0) return 1;
+        if (i >= nums.size() or target < 0) return 0;
+        if (dp[i][target]!=-1) return dp[i][target];
+        int take,notTake;
+        if(i>=0 and i<nums.size()){
+            if(target>=0){
+                take=f(i+1,target-nums[i],nums,dp);
+            }
+            notTake=f(i+1,target,nums,dp);
+
+        }
+
+        return dp[i][target]=take || notTake;
+
+
     }
-    
     bool canPartition(vector<int>& nums) {
-        int totalSum = accumulate(nums.begin(), nums.end(), 0);
-        if (totalSum % 2 != 0) return false;
+        int n=nums.size();
+        int sum=accumulate(nums.begin(),nums.end(),0);
+        if (sum%2!=0) return 0;
+        vector<vector<int>> dp(n+1,vector<int>(sum/2 +1,-1));
+        return f(0,sum/2,nums,dp)>0;
+
+
         
-        dp = vector<vector<int>>(nums.size(), vector<int>(totalSum / 2 + 1, -1));
-        return f(0, 0, totalSum, nums);
+        
+        
     }
 };
-
