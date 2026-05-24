@@ -6,7 +6,7 @@ public:
             hash[i]++;
         }
         int res=-1;
-        for(auto &it:hash){
+        for(auto it:hash){
             if (it.second >1) {
                 res=it.first;
                 break;
