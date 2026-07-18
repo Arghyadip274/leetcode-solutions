@@ -1,34 +1,35 @@
-#include<bits/stdc++.h>
-using namespace std;
 class Solution {
-private:
-    bool dfs(int node,vector<int> &vis, vector<int> &pathVis,vector<vector<int>>&g){
+public:
+    vector<int> vis;
+    vector<int> pathVis;
+
+    bool dfs(int node, vector<vector<int>> &g){
         vis[node]=1;
         pathVis[node]=1;
-        for (auto it: g[node]){
-            if (!vis[it] && dfs(it,vis,pathVis,g)){
-                return true;
+        for (auto v:g[node]){
+            if(!vis[v]){
+                if(dfs(v,g)) return 1;
             }
-            else if(pathVis[it]) return true;
+            else if(pathVis[v]) return 1;
         }
         pathVis[node]=0;
-        return false;
+        return 0;
     }
-public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<vector<int>> g(numCourses);
-        for(int i=0;i<prerequisites.size();i++){
-            g[prerequisites[i][1]].push_back(prerequisites[i][0]);
+
+
+
+    bool canFinish(int n, vector<vector<int>>& prerequisites) {
+        vis.assign(n,0);
+        pathVis.assign(n,0);
+        vector<vector<int>> g(n);
+        for (auto i:prerequisites){
+            g[i[1]].push_back(i[0]);
         }
-        vector<int> vis(numCourses,0);
-        vector<int>pathVis(numCourses,0);
-        for (int i =0;i<numCourses;i++){
+        for (int i=0;i<n;i++){
             if (!vis[i]){
-                if (dfs(i,vis,pathVis,g)) return false;
+                if(dfs(i,g)) return 0;
             }
         }
-        return true;
-
-
+        return 1;
     }
 };
