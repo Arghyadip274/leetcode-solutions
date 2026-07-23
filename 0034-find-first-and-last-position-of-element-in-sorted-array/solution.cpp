@@ -5,37 +5,34 @@ public:
         int l=0;
         int r=n-1;
         vector<int> ans;
+        int temp=-1;
         while (l<=r){
-            int mid =l+(r-l)/2;
-            if (nums[mid]== target){
-                if (mid==0 or nums[mid]!= nums[mid-1]) {
-                    ans.push_back(mid);
-                    break;
-                }
-
-                else r=mid-1;
+            int mid=l+(r-l)/2;
+            if(nums[mid]==target){
+                temp=mid;
+                r=mid-1;
             }
-            else if (nums[mid]>target) r=mid-1;
+            else if (nums[mid]> target) {
+                r=mid-1;
+            }
             else l=mid+1;
         }
+        ans.push_back(temp);
+        temp=-1;
         l=0;
         r=n-1;
         while (l<=r){
-            int mid =l+(r-l)/2;
-            if (nums[mid]== target){
-                if (mid==n-1 or nums[mid]!= nums[mid+1]) {
-                    ans.push_back(mid);
-                    break;
-                }
-                else l=mid+1;
+            int mid=l+(r-l)/2;
+            if(nums[mid]==target){
+                temp=mid;
+                l=mid+1;
             }
-            else if (nums[mid]>target) r=mid-1;
+            else if (nums[mid]> target) {
+                r=mid-1;
+            }
             else l=mid+1;
         }
-        if (ans.empty()) {
-            ans.push_back(-1);
-            ans.push_back(-1);
-        }
+        ans.push_back(temp);
         return ans;
     }
 };
