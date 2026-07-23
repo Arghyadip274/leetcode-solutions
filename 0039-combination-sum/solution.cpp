@@ -1,9 +1,8 @@
 class Solution {
 public:
-    vector<vector<int>> ans;
     vector<int> path;
-    int sum=0;
-    void f(int start,int target, vector<int> &nums){
+    vector<vector<int>> ans;
+    void f(int start, int target,vector<int>&nums){
         if(target==0){
             ans.push_back(path);
             return;
@@ -15,9 +14,8 @@ public:
             path.pop_back();
         }
     }
-
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        f(0,target,candidates);
+        f(0,target, candidates);
         return ans;
     }
 };
