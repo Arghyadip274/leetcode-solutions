@@ -4,22 +4,21 @@ public:
         int head=-1;
         int tail=0;
         int ans=1e9;
-        int sum=0;
         int n=nums.size();
+        int sum=0;
         while (tail<n){
-            while (head+1< n and sum<target){
+            while (head+1<n and sum<target ){
                 head++;
                 sum+=nums[head];
             }
-            if (sum>= target){
-                ans=min(ans,head-tail+1);
-            }
+            if(sum>=target)ans=min(ans,head-tail+1);
             sum-=nums[tail];
             tail++;
-            if(head<tail){
+            if(tail>head){
                 head=tail-1;
             }
         }
         return (ans>n)?0:ans;
+
     }
 };
