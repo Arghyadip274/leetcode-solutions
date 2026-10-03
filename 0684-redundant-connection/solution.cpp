@@ -1,28 +1,29 @@
 class Solution {
 public:
     vector<int> parent;
-    int find(int node){
-        if(parent[node]==node) return node;
-        return parent[node]=find(parent[node]);
-
-    }
-    void Union(int u, int v){
-        int pu= find(u);
-        int pv= find(v);
-        if (pu!=pv) parent[pv]=pu;
+    int find(int x){
+        if (parent[x]==x) return x;
+        return parent[x]=find(parent[x]);
     }
 
+    void Union(int u,int v){
+        int pu=find(u);
+        int pv=find(v);
+        if (pu==pv) return ;
+        else parent[pv]=pu;
+
+    }
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-        int n= edges.size();
+        int n=edges.size();
         parent.resize(n+1);
-        for(int i=1;i<=n;i++){
+        for (int i=1;i<=n;i++) {
             parent[i]=i;
         }
-        for (auto i:edges){
-            int u=i[0];
-            int v=i[1];
-            if(find(u)==find(v)) return i;
-            else Union(u,v);
+        for (auto edge: edges){
+            int u=edge[0];
+            int v=edge[1];
+            if (find(u)==find(v)) return edge;
+            Union(u,v);
         }
         return {};
     }
