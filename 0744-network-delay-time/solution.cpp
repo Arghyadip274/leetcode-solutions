@@ -1,34 +1,40 @@
 class Solution {
 public:
-    void djisktra(int node , vector <int> &dis,vector<vector<pair<int,int>>>& g){
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
-        dis[node]=0;
-        pq.push({node,0});
+    vector<int> dist;
+    void dijkstra(int src, vector<vector<pair<int,int>>> &g){
+        priority_queue<pair<int, int>, vector<pair<int, int>>,greater<pair<int, int>>> pq;
+        dist[src]=0;
+        pq.push({src,0});
         while (!pq.empty()){
-            auto [src,d]=pq.top();
+            auto[node, d]=pq.top();
             pq.pop();
-            if (d>dis[src]) continue;
-            for (auto [u,v]:g[src]){
-                if(d+v < dis[u]){
-                    dis[u]=d+v;
-                    pq.push({u,dis[u]});
+            // if (d > dist[node]) continue;
+            for (auto [u,v]:g[node]){
+                int wt=d+v;
+                if (wt<dist[u]) {
+                    pq.push({u,wt});
+                    dist[u]=wt;
                 }
             }
         }
     }
 
+
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
-        vector<vector<pair<int,int>>>g(n+1);
-        for (auto i:times){
-            g[i[0]].push_back({i[1],i[2]});
+        vector<vector<pair<int,int>>> g(n+1);
+        dist.assign(n+1,1e9);
+        for(auto v:times){
+            int src=v[0];
+            int tar=v[1];
+            int wt=v[2];
+            g[src].push_back({tar,wt});
         }
-        vector<int> dis(n+1,INT_MAX);
-        djisktra(k,dis,g);
-        int ans=0;
+        dijkstra(k,g);
+        int minTime=0;
         for (int i=1;i<=n;i++){
-            if(dis[i]==INT_MAX) return -1;
-            ans=max(ans,dis[i]);
+            minTime=max(minTime,dist[i]);
         }
-        return ans;
+        if (minTime==1e9) return -1;
+        else return minTime;
     }
 };
